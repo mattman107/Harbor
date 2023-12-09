@@ -3,7 +3,7 @@
 Harbor is a [Ship of Harkinian](https://github.com/HarbourMasters/Shipwright) (SOH) launcher/manager for those with multiple versions of SOH. 
 
 ## How to Use
-Currenly Harbor is only available as a command line application. There are plans to add an official GUI for those who prefer that.
+Currenly Harbor is only available as a command line application. There are plans to add an official GUI for those who prefer that. This project was also written in a pretty modular way so you can just take the base program and put your own GUI on top of it if you are proficient enough.
 
 This application expects that you have all of your versions of SOH in a single folder, all of your roms in a different folder, and Harbor should have its own folder as well.
 For example:
