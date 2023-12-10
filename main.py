@@ -39,9 +39,11 @@ a = sohFileHandler()
 @click.option('--default', 'param', flag_value='default', help='Set default SOH version')
 @click.option('--run', 'param', flag_value='run', help='Run a version of SOH. Spell out the verion name or leave blank for default')
 @click.option('--symlink', 'param', flag_value='sym', help="Symlink all Roms in the Rom Directory for a version of SOH. Symlinked roms won't work for all versions of SOH.")
-@click.argument('input', default='')
-def main(param, input):
-    
+@click.option('--copy', 'param', flag_value='copy', help="Copy save data between two versions of SOH. SHOULD ONLY BE DONE IF YOU KNOW WHAT YOU ARE DOING.")
+@click.argument('inp', default='')
+@click.argument('inp2', default='')
+def main(param, inp, inp2):
+
     match param:
         case 'versions':
             a.setSohVersions()
@@ -50,41 +52,75 @@ def main(param, input):
             a.setSohVersions()
         case 'default':
             try:
-                a.setDefaultVersion(input)
-                print("Default SOH Version set to " + a.getDefaultSohVersion)
+                a.setDefaultVersion(inp)
+                print("Default SOH Version set to " + a.getDefault())
             except:
                 print("SOH version input not found")
         case 'gsoh':
             print(a.getSohDir())
         case 'soh':
-            a.setSohDir(input)
+            a.setSohDir(inp)
         case 'grom':
             print(a.getRomDir())
         case 'rom':
-            a.setRomDir(input)
+            a.setRomDir(inp)
         case 'run':
 
-            if input == '':
-                a.runSOH(a.getDefaultSohVersion()[a.getJsonSohVersionPathName()], _localDir)
+            if inp == '':
+                a.runSOH(a.getPathofSohVersion(a.getDefault()), _localDir)
                 print("No version input. Opening default.")
                 return
 
             try:
-                a.runSOH(a.getSohVersions()[input][a.getJsonSohVersionPathName()], _localDir)
-                print("Opening " + input)
+                a.runSOH(a.getSohVersions()[inp][a.getJsonSohVersionPathName()], _localDir)
+                print("Opening " + inp)
             except:
-                print("Couldn't open " + input + " version of SOH. It may not exist.")
+                print("Couldn't open " + inp + " version of SOH. It may not exist.")
         case 'sym':
 
             path = None
             try:
-                path = a.getSohVersions()[input][a.getJsonSohVersionPathName()]
-                a.symlinkRom(path)
-            except:
+                path = a.getPathofSohVersion(inp)
+
                 if (path == None):
                     print("Version doesn't exist.")
                     return
+                
+                a.symlinkRom(path)
+            except:
                 print("Couldn't symlink. There are already symlinked files in directory: " + path)
+
+        case 'copy':
+
+            if (a.getPathofSohVersion(inp) == None):
+                print("From version not found")
+                return
+
+            if (a.getPathofSohVersion(inp2) == None):
+                print("To version not found")
+                return
+
+            try:
+                print("This is recommended for advanced users only. Copying data between different versions of SOH can sometimes not work.")
+                print("WARNING: THIS WILL OVERWRITE ANY EXISTING FILES/FOLDERS")
+
+                if (str(input("Are you sure you want to copy files?(Y/N) ")).lower() == 'n'):
+                    return
+                
+                if (str(input("Copy shipofharkinian.json? ").lower()) == 'y'):
+                    a.copyData(inp, inp2, "shipofharkinian.json")
+
+                if (str(input("Copy save folder? ").lower()) == 'y'):
+                    a.copyData(inp, inp2, "Save")
+
+                if (str(input("Copy mods folder? ").lower()) == 'y'):
+                    a.copyData(inp, inp2, "mods")
+                
+                if (str(input("Copy imgui.ini? ").lower()) == 'y'):
+                    a.copyData(inp, inp2, "imgui.ini")
+                
+            except:
+                print("Couldn't copy files")
 
 if __name__=='__main__':
     main()

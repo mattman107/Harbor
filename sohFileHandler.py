@@ -2,7 +2,7 @@ import os
 import json
 import platform
 import subprocess
-#import sys
+import shutil
 
 class sohFileHandler:
     #constructors
@@ -93,15 +93,13 @@ class sohFileHandler:
             
         #check if version to update is in dictionary
         if (version in self.__sohVersions):
-
             self.__default = version
-            
             self.updateJson(self.__sohVersionDefaultName, self.__default)
             return
-        raise TypeError("Version not found")
+        else:
+            raise TypeError("Version not found")
     
     #get local variables
-    #create get jsonNames
     def getSohDir(self):
         return self.__sohDir
 
@@ -111,6 +109,21 @@ class sohFileHandler:
     def getSohVersions(self):
         return self.__sohVersions
     
+    def getDefault(self):
+        return self.__default
+    
+    def getDefaultSohVersion(self):
+
+        return self.__sohVersions[self.__default]
+            
+    def getPathofSohVersion(self, version):
+        
+        if version in self.__sohVersions:
+            return self.__sohVersions[version][self.__sohVersionPathName]
+
+        return None
+    
+    #get jsonNames
     def getJsonSOHDirName(self):
         return self.__sohDirName
     
@@ -132,11 +145,6 @@ class sohFileHandler:
     def getJsonSohVersionDefaultName(self):
         return self.__sohVersionDefaultName
 
-    def getDefaultSohVersion(self):
-
-        for version in self.__sohVersions:
-            if (version == self.__default):
-                return self.__sohVersions[version]
     ########################################################################################
     #json Manipulation
     def createMetadataFile(self):
@@ -223,6 +231,18 @@ class sohFileHandler:
             if (versions[version][self.__sohVersionDefaultName] == 0):
                 print(version)
         print()
+
+    def copyData(self, fr, to, data):
+        
+        fromPath = os.path.join(self.getPathofSohVersion(fr), data)
+        toPath = os.path.join(self.getPathofSohVersion(to), data)
+
+        if(os.path.isfile(fromPath)):
+            shutil.copy2(fromPath, toPath)
+
+        if(os.path.isdir(fromPath)):
+            shutil.copytree(fromPath, toPath, dirs_exist_ok=True)
+
     ########################################################################################
     #symlink rom files
     def symlinkRom(self, path):
