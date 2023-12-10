@@ -43,9 +43,10 @@ python main.py --sohDir [path to SOH folder]
 will set the path to the folder that contains all of your SOH Versions.
 
 ```
-python main.py run 8-0-0
+python main.py --run 8-0-0
 ```
 This will run the soh.exe/soh.appimage found in the 8-0-0 folder.
+
 ### If you have a pre-bundled Harbor Version
 To run the command line application go to the folder you have downloaded the app and type:
 
@@ -60,7 +61,7 @@ If all is working fine this should show you a list of available commands. For ex
 will set the path to the folder that contains all of your SOH Versions.
 
 ```
-./main run 8-0-0
+./main --run 8-0-0
 ```
 This will run the soh.exe/soh.appimage found in the 8-0-0 folder.
 
