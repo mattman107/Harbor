@@ -35,6 +35,8 @@ To run the command line application go to the folder you have downloaded the app
 ```
 python main.py --help
 ```
+
+Some examples of commands you can type:
 ```
 python main.py --sohDir [path to SOH folder]
 ```
