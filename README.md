@@ -23,7 +23,28 @@ For example:
         ├── mq_debug.z64
         └── debug.z64
 ```
+### If you are running the python files manually
+You will have to worry about what python packages you have installed. You have the option of either creating a Python VENV to contain the external packages or you can just install the packages to your main version of Python.
 
+This line will install the required packages to your main version of Python. If using a VENV just enter the VENV and run this.
+```
+pip install -r requirements.txt
+```
+
+To run the command line application go to the folder you have downloaded the app and type:
+```
+python main.py --help
+```
+```
+python main.py --sohDir [path to SOH folder]
+```
+will set the path to the folder that contains all of your SOH Versions.
+
+```
+python main.py run 8-0-0
+```
+This will run the soh.exe/soh.appimage found in the 8-0-0 folder.
+### If you have a pre-bundled Harbor Version
 To run the command line application go to the folder you have downloaded the app and type:
 
 ```
